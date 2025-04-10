@@ -1,0 +1,772 @@
+- 👋 Hi, I’m @Guz4ng
+- 👀 I’m interested in ...
+- 🌱 I’m currently learning ...
+- 💞️ I’m looking to collaborate on ...
+- 📫 How to reach me ...
+- 😄 Pronouns: ...
+- ⚡ Fun fact: ...
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: Arial;
+      background: #d3d3d3;
+      margin: 10px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-wrapper {
+      display: flex;
+      gap: 15px;
+      flex-grow: 1;
+    }
+
+    .payment-column {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .payment-area {
+      background: white;
+      border: 3px inset #808080;
+      padding: 10px;
+      height: 60vh;
+      overflow-y: auto;
+    }
+
+    .total-display {
+      background: #f0f0f0;
+      border: 3px inset #808080;
+      padding: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .main-interface {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toolbar {
+      background: #808080;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+    }
+
+    .toolbar-icon {
+      background: #c0c0c0;
+      border: 2px outset;
+      padding: 3px 5px;
+      margin: 2px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .status-bar {
+      background: yellow;
+      padding: 3px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .category-buttons {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 5px;
+      margin: 5px 0;
+    }
+
+    .category-buttons.hidden {
+      display: none;
+    }
+
+    .category-btn {
+      background: #008000;
+      color: white;
+      border: 2px outset;
+      padding: 5px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: normal;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-break: break-word;
+      box-sizing: border-box;
+    }
+
+    .category-btn.selected {
+      background: #9370DB;
+      border: 2px solid #4B0082;
+    }
+
+    .content-area {
+      display: flex;
+      gap: 10px;
+      flex-grow: 1;
+    }
+
+    .size-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 100px;
+    }
+
+    .size-btn, .extra-btn, .bottle-btn {
+      background: #0000ff;
+      color: white;
+      border: 2px outset;
+      padding: 8px;
+      cursor: pointer;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 12px;
+    }
+
+    .size-btn.selected, .extra-btn.selected, .bottle-btn.selected {
+      background: #00008b;
+      border: 2px solid #0000ff;
+    }
+
+    .central-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .central-area {
+      flex-grow: 1;
+      background: white;
+      border: 2px inset;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .central-area.addons-mode {
+      grid-template-columns: repeat(9, 1fr);
+      grid-auto-rows: minmax(80px, auto);
+    }
+
+    .bottom-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 5px;
+    }
+
+    .control-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 250px;
+    }
+
+    .action-btn {
+      background: #c0c0c0;
+      border: 2px outset;
+      padding: 5px 8px;
+      min-width: 50px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .num-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .num-pad button {
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border: 2px outset #c0c0c0;
+      background: #f0f0f0;
+    }
+
+    .num-pad button.selected {
+      background: #00008b;
+      color: white;
+    }
+
+    .bottom-btn {
+      border: 2px outset;
+      padding: 10px;
+      cursor: pointer;
+      min-width: 120px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .discount-btn {
+      background: blue;
+      color: white;
+    }
+
+    .addon-btn {
+      background: #9400d3;
+      color: white;
+    }
+
+    .addon-btn.selected {
+      background: #8b008b;
+      border: 2px solid #4b0082;
+    }
+
+    .item-btn {
+      background: #eee;
+      border: 2px outset;
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-break: break-word;
+      font-size: 12px;
+    }
+
+    .item-btn.selected {
+      background: #9370DB;
+      border: 2px solid #4B0082;
+      color: white;
+    }
+
+    .comanda-item {
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .nav-arrows {
+      display: flex;
+      gap: 5px;
+    }
+
+    .arrow-btn {
+      background: #0000ff;
+      color: white;
+      border: 2px outset;
+      padding: 10px;
+      cursor: pointer;
+      min-width: 50px;
+      text-align: center;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arrow-btn.selected {
+      background: #00008b;
+      border: 2px solid #0000ff;
+    }
+
+    /* Efeito de clique nos botões */
+    .arrow-btn:active, .discount-btn:active, .addon-btn:active {
+      transform: translateY(2px);
+      border-style: inset;
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="toolbar-icon">📝</div>
+    <div class="toolbar-icon">⚙️</div>
+    <div class="toolbar-icon">🔍</div>
+    <div style="flex-grow: 1; text-align: center">Gustavo</div>
+  </div>
+
+  <div class="status-bar" id="statusBar">Ready For Your Next Entry</div>
+
+  <div class="main-wrapper">
+    <div class="payment-column">
+      <div class="payment-area">
+        <div class="selected-items"></div>
+      </div>
+      <div class="total-display" id="totalDisplay">Total: R$ 0,00</div>
+    </div>
+
+    <div class="main-interface">
+      <div class="category-buttons" id="categoryButtons">
+        <div class="category-btn" onclick="loadCategory('filtrado')">Café<br>Filtrado</div>
+        <div class="category-btn" onclick="loadCategory('quentes')">Bebidas<br>Quentes</div>
+        <div class="category-btn" onclick="loadCategory('frias')">Bebidas<br>Frias</div>
+        <div class="category-btn" onclick="loadCategory('frapp')">Frappuccinos</div>
+        <div class="category-btn" onclick="loadCategory('outras')">Outras<br>Bebidas</div>
+        <div class="category-btn" onclick="loadCategory('sazonais')">Sazonais</div>
+        <div class="category-btn" onclick="loadCategory('doces')">Doces</div>
+        <div class="category-btn" onclick="loadCategory('salgados')">Salgados</div>
+        <div class="category-btn" onclick="loadCategory('sanduiches')">Sanduíches</div>
+        <div class="category-btn" onclick="loadCategory('embalados')">Produtos<br>Embalados</div>
+        <div class="category-btn" onclick="loadCategory('graos')">Grãos</div>
+        <div class="category-btn" onclick="loadCategory('promocoes')">Promoções</div>
+      </div>
+
+      <div class="content-area">
+        <div class="size-buttons" id="sizeButtons">
+          <div class="size-btn" onclick="selectSize('Short')">Short</div>
+          <div class="size-btn" onclick="selectSize('Tall')">Tall</div>
+          <div class="size-btn" onclick="selectSize('Grande')">Grande</div>
+          <div class="size-btn" onclick="selectSize('Venti')">Venti</div>
+
+          <div id="bottleOption" class="bottle-btn hidden" onclick="loadBottleOptions()">Garrafas</div>
+
+          <div id="extraHotOptions" style="margin-top: 10px; display: none;">
+            <div class="extra-btn" onclick="loadEspressoOptions()">Espresso</div>
+            <div class="extra-btn" onclick="addItemToOrder('Café em Dobro')">Café em Dobro</div>
+          </div>
+        </div>
+
+        <div class="central-container">
+          <div class="central-area" id="centralArea"></div>
+          
+          <div class="bottom-controls">
+            <div class="nav-arrows" id="navArrows" style="display: none;">
+              <div class="arrow-btn" onclick="prevPage()">↑</div>
+              <div class="arrow-btn" onclick="nextPage()">↓</div>
+            </div>
+            <div class="bottom-btn discount-btn" onclick="discountList()">Discount List</div>
+            <div class="bottom-btn addon-btn" id="addonBtn" onclick="toggleAddons()">Agregar</div>
+          </div>
+        </div>
+
+        <div class="control-panel" id="controlPanel">
+          <div style="display: flex; gap: 5px">
+            <div class="action-btn">Void</div>
+            <div class="action-btn">🔍</div>
+            <div class="action-btn" style="color: green">✓</div>
+            <div class="action-btn" style="color: red" onclick="clearQuantity()">✕</div>
+          </div>
+          <div class="num-pad" id="numPad">
+            <button onclick="addToQuantity('1')">1</button>
+            <button onclick="addToQuantity('2')">2</button>
+            <button onclick="addToQuantity('3')">3</button>
+            <button onclick="addToQuantity('4')">4</button>
+            <button onclick="addToQuantity('5')">5</button>
+            <button onclick="addToQuantity('6')">6</button>
+            <button onclick="addToQuantity('7')">7</button>
+            <button onclick="addToQuantity('8')">8</button>
+            <button onclick="addToQuantity('9')">9</button>
+            <button onclick="addToQuantity('0')">0</button>
+            <button onclick="addToQuantity('.')">.</button>
+            <button onclick="applyQuantity()">ENT</button>
+          </div>
+          <div style="margin-top: 10px">
+            <div class="action-btn" style="background: red; color: white">Logout</div>
+            <div class="action-btn" style="background: green; color: white" onclick="showMainMenu()">Payment Screen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const addons = ["Combo Grande", "Combo Venti", "Chantily Briga", "Chantilly", "Choco Chip", "Cobert Caramelo", "Cobert Chocolate", "Cold Foam", "Dose Esp Bblend", "Dose Esp EpRoast", "Extra Gelo", "Na Xicara", "Para Viagem", "Pouco Chantilly", "Pouco Gelo", "Sem Agua", "Sem Chantilly", "Sem Classic", "Sem Gelo", "Sem Tampa", "Temp Extra Hot", "Temperatura Kids", "Add LeiCocoCaju", "Add LeiIntegral", "Add LeiteAmen", "Add Leite Desn", "Add LeitZeroLac", "AddLeiteAveia", "Base Brigadeiro", "Base Cafe", "Base Creme", "Base RefreMora", "Base RefrePita", "Base Refresh Lim", "Base RefreshFruV", "Baunilh S Acuc", "Baunilha", "Blueberry", "CaldaMaracuja", "Canela", "Caramelo", "Chai", "CobertMaracuja", "Cold Brew", "CremeBaunilha", "Doce de Leite", "Essenc Avela", "Essenc Blueberry", "Essenc Classic", "Frapp Roast", "Frutas Vermelhas", "Limao", "Limonada", "Matcha", "Menta", "Mocha", "Mocha Branco", "Morango", "Pitaia", "Topping Granulad", "Xarope Morango"];
+
+    // Lista de addons sem custo
+    const addonsSemCusto = [
+      "Combo Grande", "Combo Venti", "Extra Gelo", "Na Xicara", 
+      "Para Viagem", "Pouco Chantilly", "Pouco Gelo", "Sem Agua", 
+      "Sem Chantilly", "Sem Classic", "Sem Gelo", "Sem Tampa", 
+      "Temp Extra Hot", "Temperatura Kids"
+    ];
+
+    // Preço padrão para addons com custo
+    const PRECO_ADDON = 4.90;
+
+    const categorias = {
+      filtrado: ["Café com Leite", "Café Filtrado", "Prensa"],
+      quentes: ["Americano", "Baunilha Latte", "Brigadeiro Latte", "Café Latte", "Café Mocha", "Cappuccino Brigadeiro", "Cappuccino Canela", "Cappuccino Chocolate", "Cappuccino", "Cappuccino Doce de Leite", "Caramel Macchiato", "Doce de Leite Latte", "Flat White", "Latte Avelã", "Latte Macchiato", "Mocha Branco"],
+      frias: ["Cold Brew", "Cold Brew Baunilha", "Cold Brew Leite", "Cold Brew Nitro", "Iced Americano", "Iced Baunilha Latte", "Iced Café Filtrado", "Iced Café Latte", "Iced Cappuccino Chocolate", "Iced Cappuccino Doce de Leite", "Iced Cappuccino Canela", "Iced Cappuccino", "Iced Caramel Macchiato", "Iced Doce de Leite Latte", "Iced Mocha", "Iced Mocha Branco", "Iced Café com Leite", "Iced Shaken Espresso"],
+      frapp: ["CFrCrocante", "CrCrocanteCRM", "Frap Avela CF", "Frap Brig CF", "Frap Brig CRM", "Frap Choc Bran", "Frap Choc Chip", "Frap Avela CRM", "Frap Caramel CRM", "Frap Choco Chip CRM", "Frapp Café", "Frapp Caramel", "Frapp CRM Baunilha", "Frapp CRM Chai", "Frapp CRM Chá Verde", "Frapp CRM Choc", "Frapp DL Cafe", "Frapp DL Crm", "FrappMocha", "FrappMochBra", "FrappMaracuja"],
+      outras: ["Chá Gelado Chai", "Chá Gelado Preto", "Chá Gelado Verde", "Chá Quente Chai", "Chá Quente Preto", "Chá Quente Verde", "Chai Latte", "Chá Preto Blueberry", "Chá Preto Limão Blueberry", "Chá Verde Blueberry", "Chá Verde Latte", "Chá Verde Limão Blueberry", "Chocolate Branco", "Chocolate Quente", "Dragon Drink", "Frozen Duplo Morango", "Frozen Lemon Pitaia", "Iced Chai Latte", "Iced Chocolate Branco", "Iced Chocolate", "Iced Shake Chai", "Iced Shake Preto", "Iced Shake Verde", "Iced Chá Verde Latte", "Leite Vaporizado", "Pink Drink", "Refresh Frutas Vermelhas", "Refresh Limão", "Refresh Morango Limão", "Refresh Pitaya Limão", "Refresh Pitaya", "RFV Limonada", "Violet Drink"],
+      doces: ["Brownie Espresso", "Cinnamon Roll", "Cookie Baunilha", "Cookie Chocolate", "Donut Ring Doce de Leite", "Donuts Chocolate Berry", "Muffin Blueberry", "Muffin Chocolate", "Red Velvet", "Red Velvet Inteiro", "Ring Donut Chocolate", "Ring Donut Cookie"],
+      salgados: ["Coxinha", "Croissant Frango", "Croissant Multigrãos", "Croissant Presunto Queijo", "Mini Coxinha Frango", "Mini Pão de Queijo", "Pão de Queijo Multigrãos", "Pão de Queijo", "Torrada Petrópolis"],
+      sanduiches: ["Baguete Carne", "Croque Monsieur", "Focaccia Caprese", "Toast Peru 24", "Toast Presunto 24", "Toast Queijo 24"],
+      embalados: ["Bananinha", "Barra NutCocoCho", "BarraNutCrnbCho", "Bolo Cenoura", "Bolo de Banana", "Chocotube", "DarkChocotube", "Pao de Mel", "Sand Atum", "Sand Peru", "Sand Salame", "Sand Salpocao", "Sld Frutas Gr", "Stroop Cara1uni"],
+      graos: ["Brasil Blend", "Casi Cielo", "Colômbia", "El Salvador", "Espresso Roast", "Etiópia", "Quênia", "Pike Place Roast", "Sumatra", "Verona", "Voyage Blend", "Papua Nova Guiné"],
+      sazonais: [],
+      promocoes: ["BorraCafe 250g", "Garrafa e RL", "LojCrmlMach +PQ", "LojLatte+PQ"]
+    };
+
+    const espressoOptions = [
+      "Espresso Avelã", "Espresso Brigadeiro", "Espresso com Panna Doppio", 
+      "Espresso com Panna Grande", "Espresso H2O", "Espresso H2O Grande", 
+      "Espresso Lungo", "Espresso Lungo Grande", "Espresso Macchiato Doppio", 
+      "Espresso Macchiato Grande", "Espresso Ristretto", "Espresso Ristretto Grande", 
+      "Espresso Úmido", "Espresso Úmido Grande", "Espresso Doppio", "Espresso Doppio Gr"
+    ];
+
+    const bottleOptions = [
+      "AguaCaixa330ml", "AguaCaixa500ml", "AguaCocoIntegra", 
+      "AguaLataComGas", "AguaLataSemGas", "AguaLimaoMorango", 
+      "AguaLouCGas300", "AguaLouSGas300", "AguaMinAlbaCGas", 
+      "AguaMinAlbaSGas", "Detox", "KiroMaracuja", 
+      "KiroGengibre", "PinkLemonade", "SucoLaranja"
+    ];
+
+    let currentPage = {};
+    let selectedSize = null;
+    let total = 0;
+    let lastSelectedButton = null;
+    let lastSelectedCategory = null;
+    let currentQuantity = '';
+    let isAddonsMode = false;
+
+    function selectSize(size) {
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      event.target.classList.add('selected');
+      selectedSize = size;
+      
+      if (currentPage.category === 'filtrado') {
+        loadCategory('filtrado');
+      }
+      
+      updateDrinkButtonsWithSize();
+    }
+
+    function updateDrinkButtonsWithSize() {
+      const drinkButtons = document.querySelectorAll('.item-btn');
+      
+      drinkButtons.forEach(button => {
+        const originalName = button.dataset.originalName || button.textContent;
+        button.dataset.originalName = originalName;
+        
+        if (shouldApplySize(currentPage.category)) {
+          if ((currentPage.category === 'frapp' && selectedSize === 'Short') ||
+              ((currentPage.category === 'outras' || currentPage.category === 'frias') && selectedSize === 'Short')) {
+            button.textContent = originalName;
+          } else {
+            // Coloca o tamanho no FINAL do nome
+            button.textContent = `${originalName} ${selectedSize}`;
+          }
+        } else {
+          button.textContent = originalName;
+        }
+      });
+    }
+
+    function shouldApplySize(category) {
+      return ['filtrado', 'quentes', 'frias', 'frapp', 'outras'].includes(category) && selectedSize;
+    }
+
+    function toggleAddons() {
+      isAddonsMode = !isAddonsMode;
+      const addonBtn = document.getElementById('addonBtn');
+      const categoryButtons = document.getElementById('categoryButtons');
+      
+      if (isAddonsMode) {
+        addonBtn.classList.add('selected');
+        document.getElementById('sizeButtons').classList.add('hidden');
+        document.getElementById('controlPanel').classList.add('hidden');
+        categoryButtons.classList.add('hidden');
+        showAddons();
+      } else {
+        addonBtn.classList.remove('selected');
+        document.getElementById('sizeButtons').classList.remove('hidden');
+        document.getElementById('controlPanel').classList.remove('hidden');
+        categoryButtons.classList.remove('hidden');
+        loadCategory(currentPage.category || 'filtrado');
+      }
+    }
+
+    function showAddons() {
+      const area = document.getElementById("centralArea");
+      area.innerHTML = "";
+      area.classList.add('addons-mode');
+
+      addons.forEach(name => {
+        createItemButton(name, area);
+      });
+
+      const btn = document.createElement("div");
+      btn.className = "item-btn";
+      btn.innerText = "Voltar";
+      btn.style.background = "green";
+      btn.style.color = "white";
+      btn.addEventListener("click", () => {
+        area.classList.remove('addons-mode');
+        toggleAddons();
+      });
+      area.appendChild(btn);
+    }
+
+    function loadEspressoOptions() {
+      const area = document.getElementById("centralArea");
+      area.innerHTML = "";
+
+      espressoOptions.forEach(name => {
+        createItemButton(name, area);
+      });
+
+      const btn = document.createElement("div");
+      btn.className = "item-btn";
+      btn.innerText = "Voltar";
+      btn.style.background = "green";
+      btn.style.color = "white";
+      btn.addEventListener("click", () => loadCategory('quentes'));
+      area.appendChild(btn);
+    }
+
+    function loadBottleOptions() {
+      const area = document.getElementById("centralArea");
+      area.innerHTML = "";
+
+      bottleOptions.forEach(name => {
+        createItemButton(name, area);
+      });
+
+      const btn = document.createElement("div");
+      btn.className = "item-btn";
+      btn.innerText = "Voltar";
+      btn.style.background = "green";
+      btn.style.color = "white";
+      btn.addEventListener("click", () => loadCategory('outras'));
+      area.appendChild(btn);
+    }
+
+    function discountList() {
+      // Função para o Discount List (pode ser implementada depois)
+      console.log("Discount List clicked");
+    }
+
+    function showMainMenu() {
+      loadCategory('filtrado');
+    }
+
+    function createItemButton(name, container) {
+      const div = document.createElement("div");
+      div.className = "item-btn";
+      div.dataset.originalName = name;
+      div.textContent = name;
+      
+      div.onclick = function() {
+        if (lastSelectedButton) {
+          lastSelectedButton.classList.remove('selected');
+        }
+        
+        this.classList.add('selected');
+        lastSelectedButton = this;
+        
+        let itemName = this.dataset.originalName;
+        addItemToOrder(itemName);
+      };
+      
+      container.appendChild(div);
+    }
+
+    function addItemToOrder(name) {
+      const selectedArea = document.querySelector(".selected-items");
+      const item = document.createElement("div");
+      item.className = "comanda-item";
+      
+      let displayName = name;
+      
+      // Aplica tamanho apenas se:
+      // 1. Não for um addon (pois addons não têm tamanhos)
+      // 2. For uma categoria que aceita tamanhos
+      // 3. Tiver um tamanho selecionado
+      if (!addons.includes(name) && shouldApplySize(currentPage.category) && selectedSize) {
+        // Verifica se é uma categoria onde o Short não aplica
+        const isShortException = (currentPage.category === 'frapp' || 
+                                currentPage.category === 'outras' || 
+                                currentPage.category === 'frias') && 
+                                selectedSize === 'Short';
+        
+        if (!isShortException) {
+          // Adiciona o tamanho no FINAL do nome
+          displayName = `${name} ${selectedSize}`;
+        }
+      }
+      
+      if (currentQuantity && currentQuantity !== '1') {
+        displayName = `${currentQuantity}x ${displayName}`;
+      }
+      
+      item.innerText = displayName;
+      selectedArea.appendChild(item);
+      
+      // Calcular valor com base na quantidade e tipo de item
+      let itemValue = 10.00; // Valor padrão para itens normais
+      
+      // Verifica se é um addon
+      if (addons.includes(name)) {
+        // Addons sem custo não alteram o valor total
+        if (!addonsSemCusto.includes(name)) {
+          itemValue = PRECO_ADDON;
+        } else {
+          itemValue = 0; // Addons de preparo não têm custo
+        }
+      }
+      
+      const quantity = currentQuantity ? parseFloat(currentQuantity) : 1;
+      total += itemValue * quantity;
+      
+      document.getElementById("totalDisplay").innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+      
+      // Reset quantity after adding item
+      currentQuantity = '';
+      updateStatusBar();
+    }
+
+    function loadCategory(name) {
+      const area = document.getElementById("centralArea");
+      area.innerHTML = "";
+      area.classList.remove('addons-mode');
+      currentPage = {
+        category: name,
+        page: 1,
+        items: [...categorias[name]]
+      };
+
+      if (lastSelectedCategory) {
+        lastSelectedCategory.classList.remove('selected');
+      }
+      const currentCategoryBtn = document.querySelector(`.category-btn[onclick="loadCategory('${name}')"]`);
+      currentCategoryBtn.classList.add('selected');
+      lastSelectedCategory = currentCategoryBtn;
+
+      const sizeButtons = document.getElementById("sizeButtons");
+      const bottleOption = document.getElementById("bottleOption");
+      
+      if (['promocoes', 'graos', 'embalados', 'sanduiches', 'salgados', 'doces', 'sazonais'].includes(name)) {
+        sizeButtons.classList.add('hidden');
+      } else {
+        sizeButtons.classList.remove('hidden');
+        
+        // Seleciona 'Tall' por padrão quando mostra os botões de tamanho
+        if (!selectedSize) {
+          selectedSize = 'Tall';
+          document.querySelectorAll('.size-btn').forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn.textContent === 'Tall') {
+              btn.classList.add('selected');
+            }
+          });
+        }
+        
+        if (name === 'outras') {
+          bottleOption.classList.remove('hidden');
+        } else {
+          bottleOption.classList.add('hidden');
+        }
+      }
+
+      if (name === 'quentes') {
+        document.getElementById("extraHotOptions").style.display = "block";
+      } else {
+        document.getElementById("extraHotOptions").style.display = "none";
+      }
+
+      if (name === 'filtrado') {
+        if (!(selectedSize === 'Grande' || selectedSize === 'Venti')) {
+          currentPage.items = currentPage.items.filter(item => item !== 'Prensa');
+        }
+      }
+
+      renderPage();
+    }
+
+    function renderPage() {
+      const area = document.getElementById("centralArea");
+      area.innerHTML = "";
+
+      const itemsPerPage = 15;
+      const startIdx = (currentPage.page - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      const pageItems = currentPage.items.slice(startIdx, endIdx);
+
+      pageItems.forEach(item => {
+        createItemButton(item, area);
+      });
+
+      const navArrows = document.getElementById("navArrows");
+      if (currentPage.items.length > itemsPerPage) {
+        navArrows.style.display = "flex";
+      } else {
+        navArrows.style.display = "none";
+      }
+    }
+
+    function prevPage() {
+      if (currentPage.page > 1) {
+        currentPage.page--;
+        renderPage();
+      }
+    }
+
+    function nextPage() {
+      const itemsPerPage = 15;
+      if ((currentPage.page * itemsPerPage) < currentPage.items.length) {
+        currentPage.page++;
+        renderPage();
+      }
+    }
+
+    function addToQuantity(num) {
+      if (num === '.' && currentQuantity.includes('.')) return;
+      if (currentQuantity.length >= 4) return;
+      
+      currentQuantity += num;
+      updateStatusBar();
+    }
+
+    function clearQuantity() {
+      currentQuantity = '';
+      updateStatusBar();
+    }
+
+    function applyQuantity() {
+      if (currentQuantity === '') {
+        currentQuantity = '1';
+      }
+      updateStatusBar();
+    }
+
+    function updateStatusBar() {
+      const statusBar = document.getElementById('statusBar');
+      if (currentQuantity) {
+        statusBar.textContent = `Quantidade: ${currentQuantity}`;
+      } else {
+        statusBar.textContent = 'Ready For Your Next Entry';
+      }
+    }
+
+    // Inicializa com a primeira categoria
+    loadCategory('filtrado');
+  </script>
+</body>
+</html>
+<!---
+Guz4ng/Guz4ng is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+You can click the Preview link to take a look at your changes.
